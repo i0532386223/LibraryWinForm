@@ -1,0 +1,89 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Файлы исходного кода">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;hm;inl;inc;xsd</Extensions>
+    </Filter>
+    <Filter Include="Файлы ресурсов">
+      <UniqueIdentifier>{67DA6AB6-F800-4c08-8B7A-83BB121AAD01}</UniqueIdentifier>
+      <Extensions>rc;ico;cur;bmp;dlg;rc2;rct;bin;rgs;gif;jpg;jpeg;jpe;resx;tiff;tif;png;wav;mfcribbon-ms</Extensions>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Data">
+      <UniqueIdentifier>{27409a67-8197-46f1-b2fa-6b55f5533c86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Заголовочные файлы\Helpers">
+      <UniqueIdentifier>{a72caf0c-d2a2-4337-b95d-fa816d288732}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="Main_form.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Library_card.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="Select_book.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="UserHelper.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="BookHelper.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="MainHelper.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+    <ClCompile Include="ItemHelper.cpp">
+      <Filter>Файлы исходного кода</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="Main_form.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Library_card.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Select_book.h">
+      <Filter>Заголовочные файлы</Filter>
+    </ClInclude>
+    <ClInclude Include="Item.h">
+      <Filter>Заголовочные файлы\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="User.h">
+      <Filter>Заголовочные файлы\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="Book.h">
+      <Filter>Заголовочные файлы\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="BookExt.h">
+      <Filter>Заголовочные файлы\Data</Filter>
+    </ClInclude>
+    <ClInclude Include="BookHelper.h">
+      <Filter>Заголовочные файлы\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="ItemHelper.h">
+      <Filter>Заголовочные файлы\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="UserHelper.h">
+      <Filter>Заголовочные файлы\Helpers</Filter>
+    </ClInclude>
+    <ClInclude Include="MainHelper.h">
+      <Filter>Заголовочные файлы\Helpers</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <EmbeddedResource Include="Library_card.resx">
+      <Filter>Файлы ресурсов</Filter>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Select_book.resx">
+      <Filter>Файлы ресурсов</Filter>
+    </EmbeddedResource>
+  </ItemGroup>
+</Project>
