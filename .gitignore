@@ -1,3 +1,5 @@
+Debug/*
+x64/*
 # Compiled Object files
 *.slo
 *.lo
@@ -27,3 +29,5 @@
 *.exe
 *.out
 *.app
+LibraryWinForm/Debug
+LibraryWinForm/x64
