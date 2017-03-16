@@ -21,8 +21,13 @@ struct BookExt {
 	bool exist;
 	long date_start;
 	long date_end;
+	int id_item;
 
-	BookExt(Book book)
+	BookExt()
+	{
+		
+	}
+	BookExt(Book book, int _id_item)
 	{
 		id = book.id;
 		strcpy_s(isbn, book.isbn);
@@ -32,6 +37,7 @@ struct BookExt {
 		strcpy_s(author_name_last, book.author_name_last);
 		strcpy_s(genre, book.genre);
 		exist = book.exist;
+		id_item = _id_item;
 	}
 };
 

@@ -34,36 +34,19 @@ namespace Library {
 			//TODO: добавьте код конструктора
 			//
 		}
-	public:
-		Library_card(User *user, std::vector<Book> *books, std::vector<Item> *items)
-		{
-			InitializeComponent();
-			selected_user = user;
-			books_all = books;
-			items_all = items;
-		}
+
 
 	public:
-		User *selected_user;
-	public:
-		std::vector<Book> *books_all;
-	public:
-		std::vector<BookExt> *books_user;
-	public:
-		std::vector<Item> *items_all;
 
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  id_book;
-	public:
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Select;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  isbn;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  name;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  year;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  author_name_first;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  author_name_last;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  genre;
-	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  exist;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  date_start;
-	private: System::Windows::Forms::DataGridViewTextBoxColumn^  date_end;
+
+
+
+
+
+
+
+
+
 
 	public:
 
@@ -98,6 +81,18 @@ namespace Library {
 	private: System::Windows::Forms::Label^  label_all_books;
 	private: System::Windows::Forms::Button^  button_close;
 	private: System::Windows::Forms::Label^  label_user_name;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  id_book;
+	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Select;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  isbn;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  name;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  year;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  author_name_first;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  author_name_last;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  genre;
+	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  exist;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  date_start;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  date_end;
+	private: System::Windows::Forms::DataGridViewTextBoxColumn^  id_item;
 
 
 
@@ -130,6 +125,7 @@ namespace Library {
 			this->exist = (gcnew System::Windows::Forms::DataGridViewCheckBoxColumn());
 			this->date_start = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			this->date_end = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
+			this->id_item = (gcnew System::Windows::Forms::DataGridViewTextBoxColumn());
 			(cli::safe_cast<System::ComponentModel::ISupportInitialize^>(this->dataGridView_books))->BeginInit();
 			this->SuspendLayout();
 			// 
@@ -137,10 +133,10 @@ namespace Library {
 			// 
 			this->dataGridView_books->AllowUserToAddRows = false;
 			this->dataGridView_books->AllowUserToDeleteRows = false;
-			this->dataGridView_books->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(11) {
+			this->dataGridView_books->Columns->AddRange(gcnew cli::array< System::Windows::Forms::DataGridViewColumn^  >(12) {
 				this->id_book,
 					this->Select, this->isbn, this->name, this->year, this->author_name_first, this->author_name_last, this->genre, this->exist,
-					this->date_start, this->date_end
+					this->date_start, this->date_end, this->id_item
 			});
 			this->dataGridView_books->Location = System::Drawing::Point(3, 64);
 			this->dataGridView_books->Name = L"dataGridView_books";
@@ -256,6 +252,12 @@ namespace Library {
 			this->date_end->Name = L"date_end";
 			this->date_end->Width = 80;
 			// 
+			// id_item
+			// 
+			this->id_item->HeaderText = L"id_item";
+			this->id_item->Name = L"id_item";
+			this->id_item->Visible = false;
+			// 
 			// Library_card
 			// 
 			this->AutoScaleDimensions = System::Drawing::SizeF(6, 13);
@@ -282,9 +284,9 @@ namespace Library {
 
 #pragma endregion
 	private: System::Void Library_card_Load(System::Object^  sender, System::EventArgs^  e) {
-		if (selected_user)
+		if (Singleton::Instance().selected_user.id > 0)
 		{
-			label_user_name->Text = gcnew String(selected_user->name_first) + " " + gcnew String(selected_user->name_last);
+			label_user_name->Text = gcnew String(Singleton::Instance().selected_user.name_first) + " " + gcnew String(Singleton::Instance().selected_user.name_last);
 			show_books();
 		}
 		//user->name_first->c_str(); // Convert::ToString(selected_user->name_first->c_str()) + ' ' + Convert::ToString(selected_user->name_last->c_str());
@@ -293,31 +295,31 @@ namespace Library {
 	private:
 		void show_books()
 		{
-			if (items_all && items_all->size() > 0)
+			if (Singleton::Instance().items_all.size() > 0)
 			{
-				books_user = new std::vector<BookExt>();
-				for (int i = 0; i < (int)items_all->size(); i++)
+				Singleton::Instance().books_user.clear();
+				for (int i = 0; i < (int)Singleton::Instance().items_all.size(); i++)
 				{
-					Item item = (*items_all)[i];
-					if (item.id_user == selected_user->id)
+					Item item = Singleton::Instance().items_all[i];
+					if (item.id_user == Singleton::Instance().selected_user.id)
 					{
-						for (int i = 0; i < (int)books_all->size(); i++)
+						for (int i = 0; i < (int)Singleton::Instance().books_all.size(); i++)
 						{
-							Book book = (*books_all)[i];
+							Book book = Singleton::Instance().books_all[i];
 							if (book.id == item.id_book)
 							{
-								BookExt book2 = BookExt(book);
+								BookExt book2 = BookExt(book, item.id);
 								book2.exist = item.returned;
 								book2.date_start = item.date_start;
 								book2.date_end = item.date_end;
-								(*books_user).push_back(book2);
+								Singleton::Instance().books_user.push_back(book2);
 								break;
 							}
 						}
 					}
 				}
-				BookHelper::set_data_table_books((*books_user), this->dataGridView_books);
-				label_all_books->Text = "Count books: " + Convert::ToString((*books_user).size());
+				BookHelper::set_data_table_books(Singleton::Instance().books_user, this->dataGridView_books);
+				label_all_books->Text = "Count books: " + Convert::ToString(Singleton::Instance().books_user.size());
 			}
 		}
 
@@ -326,7 +328,7 @@ namespace Library {
 		this->Close();
 	}
 	private: System::Void button_add_book_Click(System::Object^  sender, System::EventArgs^  e) {
-		Select_book ^ form = gcnew Select_book(selected_user, books_all, items_all);
+		Select_book ^ form = gcnew Select_book();
 		form->ShowDialog();
 		show_books();
 	}
@@ -340,30 +342,30 @@ namespace Library {
 			long count = this->dataGridView_books->RowCount;
 			if (count > 0)
 			{
-				Book *books = new Book[count];
+				BookExt *books = new BookExt[count];
 				BookHelper::get_data_table_books(books, count, this->dataGridView_books);
 				if (count > 0)
 				{
 					for (int i = 0; i < count; i++)
 					{
-						Book book = books[i];
-						if (book.id > 0)
+						BookExt book = books[i];
+						if (book.id_item > 0)
 						{
-							if ((*items_all).size() > 0)
+							if (Singleton::Instance().items_all.size() > 0)
 							{
-								for (int j = (int)(*items_all).size() - 1; j >= 0; j--)
+								for (int j = (int)Singleton::Instance().items_all.size() - 1; j >= 0; j--)
 								{
-									if (book.id == (*items_all)[j].id_book)
+									if (book.id_item == Singleton::Instance().items_all[j].id)
 									{
-										if ((*items_all)[j].returned == false && book.exist == true)
+										if (Singleton::Instance().items_all[j].returned == false && book.exist == true)
 										{
 											time_t result = time(NULL);
-											(*items_all)[j].date_end = (long)result;
+											Singleton::Instance().items_all[j].date_end = (long)result;
 										}
-										(*items_all)[j].returned = book.exist;
-										if ((*items_all)[j].returned == false)
+										Singleton::Instance().items_all[j].returned = book.exist;
+										if (Singleton::Instance().items_all[j].returned == false)
 										{
-											(*items_all)[j].date_end = 0;
+											Singleton::Instance().items_all[j].date_end = 0;
 										}
 										break;
 									}

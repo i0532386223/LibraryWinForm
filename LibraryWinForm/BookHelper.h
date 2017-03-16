@@ -7,6 +7,7 @@
 #include <msclr/marshal_cppstd.h>
 #include "MainHelper.h"
 #include "time.h"
+#include "Singleton.h"
 
 using namespace System;
 
@@ -177,6 +178,7 @@ public:
 					time_t _tm2 = book.date_end;
 					dataGridView->Rows[i]->Cells[10]->Value = gcnew String(get_date(_tm2).c_str());
 				}
+				dataGridView->Rows[i]->Cells[11]->Value = book.id_item;
 			}
 		}
 
@@ -267,6 +269,66 @@ public:
 			}
 		}
 	}
+
+	public:
+		static void get_data_table_books(BookExt *books, long count, System::Windows::Forms::DataGridView ^ dataGridView)
+		{
+			int current = 0;
+			for (int i = 0; i < count; i++)
+			{
+				int local_id = 0;
+				std::string idDb = MainHelper::get_table_field(dataGridView, i, 0);
+				if (!idDb.empty())
+				{
+					local_id = std::stoi(idDb);
+				}
+				if (local_id > current)
+				{
+					current = local_id;
+				}
+			}
+			for (int i = 0; i < count; i++)
+			{
+				strcpy_s(books[i].isbn, MainHelper::get_table_field(dataGridView, i, 2).c_str());
+				strcpy_s(books[i].name, MainHelper::get_table_field(dataGridView, i, 3).c_str());
+				books[i].year = 0;
+				std::string year = MainHelper::get_table_field(dataGridView, i, 4);
+				if (!year.empty())
+				{
+					try
+					{
+						books[i].year = std::stoi(year);
+					}
+					catch (const std::exception&)
+					{
+					}
+				}
+				strcpy_s(books[i].author_name_first, MainHelper::get_table_field(dataGridView, i, 5).c_str());
+				strcpy_s(books[i].author_name_last, MainHelper::get_table_field(dataGridView, i, 6).c_str());
+				strcpy_s(books[i].genre, MainHelper::get_table_field(dataGridView, i, 7).c_str());
+				std::string exist = MainHelper::get_table_field(dataGridView, i, 8).c_str();
+				books[i].exist = false;
+				if (exist == "True")
+				{
+					books[i].exist = true;
+				}
+				std::string idDb = MainHelper::get_table_field(dataGridView, i, 0);
+				if (!idDb.empty())
+				{
+					books[i].id = std::stoi(idDb);
+				}
+				if (books[i].id <= 0)
+				{
+					current++;
+					books[i].id = current;
+				}
+				std::string id_item = MainHelper::get_table_field(dataGridView, i, 11);
+				if (!id_item.empty())
+				{
+					books[i].id_item = std::stoi(id_item);
+				}
+			}
+		}
 
 public:
 	static Book get_book(int id, std::vector<Book> books)

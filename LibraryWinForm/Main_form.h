@@ -1,5 +1,5 @@
 #pragma once
-#define _CRT_SECURE_NO_WARNINGS
+// #define _CRT_SECURE_NO_WARNINGS
 
 #include <windows.h>
 #include "User.h"
@@ -12,6 +12,7 @@
 #include "BookHelper.h"
 #include "Library_card.h"
 #include "MainHelper.h"
+#include "Singleton.h"
 
 
 
@@ -27,15 +28,8 @@ namespace Library
 
 	// using namespace std;
 
-	std::vector<User> users_all;
-	std::vector<User> users_filter;
 	bool filter_active_users;
-
-	std::vector<Book> books_all;
-	std::vector<Book> books_filter;
 	bool filter_active_books;
-
-	std::vector<Item> items_all;
 
 	/// <summary>
 	/// Summary for Main_form
@@ -927,11 +921,11 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 
 			std::vector<Item> items = {};
 			int n = load_data_items(items);
-			items_all = items;
+			Singleton::Instance().items_all = items;
 
 			std::vector<User> users = {};
 			n = load_data_users(users);
-			users_all = users;
+			Singleton::Instance().users_all = users;
 
 			// UserHelper::test_add_items(users);
 			UserHelper::set_data_table_users(users, this->dataGridView_users);
@@ -939,7 +933,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			std::vector<Book> books = {};
 			n = load_data_books(books);
 			// UserHelper::test_add_items(users);
-			books_all = books;
+			Singleton::Instance().books_all = books;
 			//have_books
 			BookHelper::set_data_table_books(books, this->dataGridView_books);
 
@@ -959,14 +953,14 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			update_users();
 			update_filter_users_active();
 			std::vector<User> users1 = {};
-			if (filter_active_users && users_filter.size() > 0)
+			if (filter_active_users && Singleton::Instance().users_filter.size() > 0)
 			{
-				users1 = users_filter;
+				users1 = Singleton::Instance().users_filter;
 			}
 			else
 			{
-				users1 = users_all;
-				users_filter = users_all;
+				users1 = Singleton::Instance().users_all;
+				Singleton::Instance().users_filter = Singleton::Instance().users_all;
 			}
 			if (checkBox_name_user->Checked)
 			{
@@ -982,7 +976,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 						users2.push_back(user);
 					}
 				}
-				users_filter = users2;
+				Singleton::Instance().users_filter = users2;
 				UserHelper::set_data_table_users(users2, this->dataGridView_users);
 			}
 			else
@@ -998,14 +992,14 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			update_users();
 			update_filter_users_active();
 			std::vector<User> users1 = {};
-			if (filter_active_users && users_filter.size() > 0)
+			if (filter_active_users && Singleton::Instance().users_filter.size() > 0)
 			{
-				users1 = users_filter;
+				users1 = Singleton::Instance().users_filter;
 			}
 			else
 			{
-				users1 = users_all;
-				users_filter = users_all;
+				users1 = Singleton::Instance().users_all;
+				Singleton::Instance().users_filter = Singleton::Instance().users_all;
 			}
 			if (checkBox_age_user->Checked)
 			{
@@ -1019,7 +1013,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 						users2.push_back(user);
 					}
 				}
-				users_filter = users2;
+				Singleton::Instance().users_filter = users2;
 				UserHelper::set_data_table_users(users2, this->dataGridView_users);
 			}
 			else
@@ -1035,14 +1029,14 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			update_users();
 			update_filter_users_active();
 			std::vector<User> users1 = {};
-			if (filter_active_users && users_filter.size() > 0)
+			if (filter_active_users && Singleton::Instance().users_filter.size() > 0)
 			{
-				users1 = users_filter;
+				users1 = Singleton::Instance().users_filter;
 			}
 			else
 			{
-				users1 = users_all;
-				users_filter = users_all;
+				users1 = Singleton::Instance().users_all;
+				Singleton::Instance().users_filter = Singleton::Instance().users_all;
 			}
 			if (checkBox_address->Checked)
 			{
@@ -1057,7 +1051,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 						users2.push_back(user);
 					}
 				}
-				users_filter = users2;
+				Singleton::Instance().users_filter = users2;
 				UserHelper::set_data_table_users(users2, dataGridView_users);
 			}
 			else
@@ -1091,9 +1085,9 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 					return;
 				}
 			}
-			users_all.clear();
-			books_all.clear();
-			items_all.clear();
+			Singleton::Instance().users_all.clear();
+			Singleton::Instance().books_all.clear();
+			Singleton::Instance().items_all.clear();
 			GC::Collect();
 		}
 
@@ -1116,18 +1110,18 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			update_users();
 			update_filter_users_active();
 			std::vector<User> users1 = {};
-			if (filter_active_users && users_filter.size() > 0)
+			if (filter_active_users && Singleton::Instance().users_filter.size() > 0)
 			{
-				users1 = users_filter;
+				users1 = Singleton::Instance().users_filter;
 			}
 			else
 			{
-				users1 = users_all;
-				users_filter = users_all;
+				users1 = Singleton::Instance().users_all;
+				Singleton::Instance().users_filter = Singleton::Instance().users_all;
 			}
 			if (checkBox_only_return_user->Checked)
 			{
-				UserHelper::set_have_books(users1, items_all);
+				UserHelper::set_have_books(users1, Singleton::Instance().items_all);
 				std::vector<User> users2 = {};
 				for (int i = 0; i < (int)users1.size(); i++)
 				{
@@ -1137,7 +1131,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 						users2.push_back(user);
 					}
 				}
-				users_filter = users2;
+				Singleton::Instance().users_filter = users2;
 				UserHelper::set_data_table_users(users2, this->dataGridView_users);
 			}
 			else
@@ -1159,12 +1153,12 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			}
 			if (filter_active_users)
 			{
-				UserHelper::remove_item(users_filter, id);
-				UserHelper::remove_item(users_all, id);
+				UserHelper::remove_item(Singleton::Instance().users_filter, id);
+				UserHelper::remove_item(Singleton::Instance().users_all, id);
 			}
 			else
 			{
-				UserHelper::remove_item(users_all, id);
+				UserHelper::remove_item(Singleton::Instance().users_all, id);
 			}
 		}
 
@@ -1179,16 +1173,17 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 				if (!idDb.empty())
 				{
 					id = std::stoi(idDb);
-					User user = UserHelper::get_user(id, users_all);
+					User user = UserHelper::get_user(id, Singleton::Instance().users_all);
 					if (user.id > 0)
 					{
 						update_users();
 						//selected_user = new User[1];
 						//selected_user[0] = user;
-						Library_card ^ form = gcnew Library_card(&user, &books_all, &items_all);
+						Singleton::Instance().selected_user = user;
+						Library_card ^ form = gcnew Library_card();
 						form->ShowDialog();
-						BookHelper::set_exists(books_all, items_all);
-						BookHelper::set_data_table_books(books_all, this->dataGridView_books);
+						BookHelper::set_exists(Singleton::Instance().books_all, Singleton::Instance().items_all);
+						BookHelper::set_data_table_books(Singleton::Instance().books_all, this->dataGridView_books);
 						update_count_users();
 						update_count_books();
 					}
@@ -1210,16 +1205,16 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			// User *users = new User[count];
 			// get_data_table(users, count);
 			update_users();
-			User *users = new User[users_all.size()];
-			for (int i = 0; i < (int)users_all.size(); i++)
+			User *users = new User[Singleton::Instance().users_all.size()];
+			for (int i = 0; i < (int)Singleton::Instance().users_all.size(); i++)
 			{
-				users[i] = users_all[i];
+				users[i] = Singleton::Instance().users_all[i];
 			}
 			FILE *fp = fopen("users.dat", "wb");
 			if (fp)
 			{
 				//fseek(fp, 0, SEEK_END);
-				fwrite(users, sizeof(User), users_all.size(), fp);
+				fwrite(users, sizeof(User), Singleton::Instance().users_all.size(), fp);
 				fclose(fp);
 				return true;
 			}
@@ -1230,15 +1225,15 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 		bool save_data_books()
 		{
 			update_books();
-			Book *books = new Book[books_all.size()];
-			for (int i = 0; i < (int)books_all.size(); i++)
+			Book *books = new Book[Singleton::Instance().books_all.size()];
+			for (int i = 0; i < (int)Singleton::Instance().books_all.size(); i++)
 			{
-				books[i] = books_all[i];
+				books[i] = Singleton::Instance().books_all[i];
 			}
 			FILE *fp = fopen("books.dat", "wb");
 			if (fp)
 			{
-				fwrite(books, sizeof(Book), books_all.size(), fp);
+				fwrite(books, sizeof(Book), Singleton::Instance().books_all.size(), fp);
 				fclose(fp);
 				return true;
 			}
@@ -1248,15 +1243,15 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 	private:
 		bool save_data_items()
 		{
-			Item *items = new Item[items_all.size()];
-			for (int i = 0; i < (int)items_all.size(); i++)
+			Item *items = new Item[Singleton::Instance().items_all.size()];
+			for (int i = 0; i < (int)Singleton::Instance().items_all.size(); i++)
 			{
-				items[i] = items_all[i];
+				items[i] = Singleton::Instance().items_all[i];
 			}
 			FILE *fp = fopen("items.dat", "wb");
 			if (fp)
 			{
-				fwrite(items, sizeof(Item), items_all.size(), fp);
+				fwrite(items, sizeof(Item), Singleton::Instance().items_all.size(), fp);
 				fclose(fp);
 				return true;
 			}
@@ -1374,11 +1369,11 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 				bool found = false;
 				if (user.id > 0)
 				{
-					for (int j = 0; j < (int)users_all.size(); j++)
+					for (int j = 0; j < (int)Singleton::Instance().users_all.size(); j++)
 					{
-						if (user.id == users_all[j].id)
+						if (user.id == Singleton::Instance().users_all[j].id)
 						{
-							users_all[j] = user;
+							Singleton::Instance().users_all[j] = user;
 							found = true;
 							break;
 						}
@@ -1386,7 +1381,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 				}
 				if (!found)
 				{
-					users_all.push_back(user);
+					Singleton::Instance().users_all.push_back(user);
 					//write_console("Add ");
 					//write_console(user.name_first);
 				}
@@ -1407,11 +1402,11 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 				bool found = false;
 				if (book.id > 0)
 				{
-					for (int j = 0; j < (int)books_all.size(); j++)
+					for (int j = 0; j < (int)Singleton::Instance().books_all.size(); j++)
 					{
-						if (book.id == books_all[j].id)
+						if (book.id == Singleton::Instance().books_all[j].id)
 						{
-							books_all[j] = book;
+							Singleton::Instance().books_all[j] = book;
 							found = true;
 							break;
 						}
@@ -1419,7 +1414,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 				}
 				if (!found)
 				{
-					books_all.push_back(book);
+					Singleton::Instance().books_all.push_back(book);
 				}
 			}
 		}
@@ -1429,15 +1424,15 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 		{
 			label_all_users->Text = "All users: " + Convert::ToString(dataGridView_users->RowCount - 1);
 			std::vector<User> users1 = {};
-			if (filter_active_users && users_filter.size() > 0)
+			if (filter_active_users && Singleton::Instance().users_filter.size() > 0)
 			{
-				users1 = users_filter;
+				users1 = Singleton::Instance().users_filter;
 			}
 			else
 			{
-				users1 = users_all;
+				users1 = Singleton::Instance().users_all;
 			}
-			UserHelper::set_have_books(users1, items_all);
+			UserHelper::set_have_books(users1, Singleton::Instance().items_all);
 			int count2 = 0;
 			for (int i = 0; i < (int)users1.size(); i++)
 			{
@@ -1455,14 +1450,14 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 		update_books();
 		update_filter_books_active();
 		std::vector<Book> books1 = {};
-		if (filter_active_books && books_filter.size() > 0)
+		if (filter_active_books && Singleton::Instance().books_filter.size() > 0)
 		{
-			books1 = books_filter;
+			books1 = Singleton::Instance().books_filter;
 		}
 		else
 		{
-			books1 = books_all;
-			books_filter = books_all;
+			books1 = Singleton::Instance().books_all;
+			Singleton::Instance().books_filter = Singleton::Instance().books_all;
 		}
 		if (checkBox_name_books->Checked)
 		{
@@ -1477,7 +1472,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 					books2.push_back(book);
 				}
 			}
-			books_filter = books2;
+			Singleton::Instance().books_filter = books2;
 			BookHelper::set_data_table_books(books2, this->dataGridView_books);
 		}
 		else
@@ -1490,14 +1485,14 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 		update_books();
 		update_filter_books_active();
 		std::vector<Book> books1 = {};
-		if (filter_active_books && books_filter.size() > 0)
+		if (filter_active_books && Singleton::Instance().books_filter.size() > 0)
 		{
-			books1 = books_filter;
+			books1 = Singleton::Instance().books_filter;
 		}
 		else
 		{
-			books1 = books_all;
-			books_filter = books_all;
+			books1 = Singleton::Instance().books_all;
+			Singleton::Instance().books_filter = Singleton::Instance().books_all;
 		}
 		if (checkBox_year_books->Checked)
 		{
@@ -1511,7 +1506,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 					books2.push_back(book);
 				}
 			}
-			books_filter = books2;
+			Singleton::Instance().books_filter = books2;
 			BookHelper::set_data_table_books(books2, this->dataGridView_books);
 		}
 		else
@@ -1524,14 +1519,14 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 		update_books();
 		update_filter_books_active();
 		std::vector<Book> books1 = {};
-		if (filter_active_books && books_filter.size() > 0)
+		if (filter_active_books && Singleton::Instance().books_filter.size() > 0)
 		{
-			books1 = books_filter;
+			books1 = Singleton::Instance().books_filter;
 		}
 		else
 		{
-			books1 = books_all;
-			books_filter = books_all;
+			books1 = Singleton::Instance().books_all;
+			Singleton::Instance().books_filter = Singleton::Instance().books_all;
 		}
 		if (checkBox_author->Checked)
 		{
@@ -1547,7 +1542,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 					books2.push_back(book);
 				}
 			}
-			books_filter = books2;
+			Singleton::Instance().books_filter = books2;
 			BookHelper::set_data_table_books(books2, this->dataGridView_books);
 		}
 		else
@@ -1560,14 +1555,14 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 		update_books();
 		update_filter_books_active();
 		std::vector<Book> books1 = {};
-		if (filter_active_books && books_filter.size() > 0)
+		if (filter_active_books && Singleton::Instance().books_filter.size() > 0)
 		{
-			books1 = books_filter;
+			books1 = Singleton::Instance().books_filter;
 		}
 		else
 		{
-			books1 = books_all;
-			books_filter = books_all;
+			books1 = Singleton::Instance().books_all;
+			Singleton::Instance().books_filter = Singleton::Instance().books_all;
 		}
 		if (checkBox_genre->Checked)
 		{
@@ -1582,7 +1577,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 					books2.push_back(book);
 				}
 			}
-			books_filter = books2;
+			Singleton::Instance().books_filter = books2;
 			BookHelper::set_data_table_books(books2, this->dataGridView_books);
 		}
 		else
@@ -1603,14 +1598,14 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 		update_books();
 		update_filter_books_active();
 		std::vector<Book> books1 = {};
-		if (filter_active_books && books_filter.size() > 0)
+		if (filter_active_books && Singleton::Instance().books_filter.size() > 0)
 		{
-			books1 = books_filter;
+			books1 = Singleton::Instance().books_filter;
 		}
 		else
 		{
-			books1 = books_all;
-			books_filter = books_all;
+			books1 = Singleton::Instance().books_all;
+			Singleton::Instance().books_filter = Singleton::Instance().books_all;
 		}
 		if (checkBox_only_return_books->Checked)
 		{
@@ -1623,7 +1618,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 					books2.push_back(book);
 				}
 			}
-			books_filter = books2;
+			Singleton::Instance().books_filter = books2;
 			BookHelper::set_data_table_books(books2, this->dataGridView_books);
 		}
 		else
@@ -1673,7 +1668,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			MainHelper::load_file(items, filename);
 			if (items.size() > 0)
 			{
-				int end = UserHelper::get_last_id(users_all);
+				int end = UserHelper::get_last_id(Singleton::Instance().users_all);
 				for (int i = 0; i < (int)items.size(); i++)
 				{
 					std::string item = items[i];
@@ -1693,11 +1688,11 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 							{
 								user.age = std::stoi(age);
 							}
-							users_all.push_back(user);
+							Singleton::Instance().users_all.push_back(user);
 						}
 					}
 				}
-				UserHelper::set_data_table_users(users_all, this->dataGridView_users);
+				UserHelper::set_data_table_users(Singleton::Instance().users_all, this->dataGridView_users);
 			}
 		}
 	}
@@ -1715,7 +1710,7 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			MainHelper::load_file(items, filename);
 			if (items.size() > 0)
 			{
-				int end = BookHelper::get_last_id(books_all);
+				int end = BookHelper::get_last_id(Singleton::Instance().books_all);
 				for (int i = 0; i < (int)items.size(); i++)
 				{
 					std::string item = items[i];
@@ -1744,11 +1739,11 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 								{
 								}
 							}
-							books_all.push_back(book);
+							Singleton::Instance().books_all.push_back(book);
 						}
 					}
 				}
-				BookHelper::set_data_table_books(books_all, dataGridView_books);
+				BookHelper::set_data_table_books(Singleton::Instance().books_all, dataGridView_books);
 			}
 		}
 	}
@@ -1761,17 +1756,18 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 			if (!idDb.empty())
 			{
 				id = std::stoi(idDb);
-				Item item = ItemHelper::get_item_from_book(id, items_all);
+				Item item = ItemHelper::get_item_from_book(id, Singleton::Instance().items_all);
 				if (item.id_user > 0)
 				{
-					User user = UserHelper::get_user(item.id_user, users_all);
+					User user = UserHelper::get_user(item.id_user, Singleton::Instance().users_all);
 					if (user.id > 0)
 					{
 						update_books();
-						Library_card ^ form = gcnew Library_card(&user, &books_all, &items_all);
+						Singleton::Instance().selected_user = user;
+						Library_card ^ form = gcnew Library_card();
 						form->ShowDialog();
-						BookHelper::set_exists(books_all, items_all);
-						BookHelper::set_data_table_books(books_all, this->dataGridView_books);
+						BookHelper::set_exists(Singleton::Instance().books_all, Singleton::Instance().items_all);
+						BookHelper::set_data_table_books(Singleton::Instance().books_all, this->dataGridView_books);
 						update_count_users();
 						update_count_books();
 					}
@@ -1791,15 +1787,15 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 		{
 			label_all_books->Text = "All books: " + Convert::ToString(dataGridView_books->RowCount - 1);
 			std::vector<Book> books1 = {};
-			if (filter_active_books && books_filter.size() > 0)
+			if (filter_active_books && Singleton::Instance().books_filter.size() > 0)
 			{
-				books1 = books_filter;
+				books1 = Singleton::Instance().books_filter;
 			}
 			else
 			{
-				books1 = books_all;
+				books1 = Singleton::Instance().books_all;
 			}
-			BookHelper::set_exists(books1, items_all);
+			BookHelper::set_exists(books1, Singleton::Instance().items_all);
 			int count2 = 0;
 			for (int i = 0; i < (int)books1.size(); i++)
 			{
@@ -1823,12 +1819,12 @@ private: System::Windows::Forms::DataGridViewButtonColumn^  library_card;
 		}
 		if (filter_active_books)
 		{
-			BookHelper::remove_item(books_filter, id);
-			BookHelper::remove_item(books_all, id);
+			BookHelper::remove_item(Singleton::Instance().books_filter, id);
+			BookHelper::remove_item(Singleton::Instance().books_all, id);
 		}
 		else
 		{
-			BookHelper::remove_item(books_all, id);
+			BookHelper::remove_item(Singleton::Instance().books_all, id);
 		}
 	}
 };

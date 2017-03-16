@@ -8,6 +8,7 @@
 #include <iostream>
 #include <ctime>
 #include "ItemHelper.h"
+#include "Singleton.h"
 
 namespace Library {
 
@@ -33,21 +34,15 @@ namespace Library {
 		}
 
 	public:
-		Select_book(User *user, std::vector<Book> *books, std::vector<Item> *items)
+		Select_book(User *user)
 		{
 			InitializeComponent();
 			selected_user = user;
-			books_all = books;
-			items_all = items;
 		}
-
 
 	public:
 		User *selected_user;
-	public:
-		std::vector<Book> *books_all;
-	public:
-		std::vector<Book> *books_user;
+
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  id_book;
 	public:
 	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  Select;
@@ -58,8 +53,6 @@ namespace Library {
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  author_name_last;
 	private: System::Windows::Forms::DataGridViewTextBoxColumn^  genre;
 	private: System::Windows::Forms::DataGridViewCheckBoxColumn^  exist;
-	public:
-		std::vector<Item> *items_all;
 
 	protected:
 		/// <summary>
@@ -236,9 +229,9 @@ namespace Library {
 #pragma endregion
 	private: System::Void Select_book_Load(System::Object^  sender, System::EventArgs^  e) {
 		std::vector<Book> books;
-		for (int i = 0; i < (int)books_all->size(); i++)
+		for (int i = 0; i < (int)Singleton::Instance().books_all.size(); i++)
 		{
-			Book book = (*books_all)[i];
+			Book book = Singleton::Instance().books_all[i];
 			if (book.exist)
 			{
 				books.push_back(book);
@@ -252,7 +245,7 @@ namespace Library {
 	private: System::Void button_add_book_Click(System::Object^  sender, System::EventArgs^  e) {
 		long count = this->dataGridView_books->RowCount;
 		Book *books = new Book[count];
-		int last = ItemHelper::get_last_id(*items_all);
+		int last = ItemHelper::get_last_id(Singleton::Instance().items_all);
 		for (int i = 0; i < count; i++)
 		{
 			int local_id = 0;
@@ -273,7 +266,7 @@ namespace Library {
 					item.id_user = selected_user->id;
 					last++;
 					item.id = last;
-					items_all->push_back(item);
+					Singleton::Instance().items_all.push_back(item);
 				}
 			}
 		}

@@ -77,6 +77,9 @@
     <ClInclude Include="MainHelper.h">
       <Filter>Заголовочные файлы\Helpers</Filter>
     </ClInclude>
+    <ClInclude Include="Singleton.h">
+      <Filter>Заголовочные файлы\Data</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <EmbeddedResource Include="Library_card.resx">
