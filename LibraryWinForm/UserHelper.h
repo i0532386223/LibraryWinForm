@@ -68,14 +68,28 @@ public:
 public:
 	static void remove_item(std::vector<User> &v1, int id)
 	{
+		std::vector<User> v2;
 		for (int i = 0; i < (int)v1.size(); i++)
 		{
-			if (v1[i].id == id)
+			if (v1[i].id != id)
 			{
-				v1.erase(v1.begin() + i);
+				v2.push_back(v1[i]);
 			}
 		}
+		v1 = v2;
 	}
+
+//public:
+//	static void remove_item(std::vector<User> &v1, int id)
+//	{
+//		for (int i = 0; i < (int)v1.size(); i++)
+//		{
+//			if (v1[i].id == id)
+//			{
+//				v1.erase(v1.begin() + i);
+//			}
+//		}
+//	}
 
 
 public:
